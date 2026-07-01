@@ -4,15 +4,11 @@ import { getDashboardStats, getProducts } from '../services/inventory.service';
 import { Package2, AlertTriangle, Users, DollarSign, Loader2, ArrowRight } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Link } from 'react-router-dom';
+import api from '../services/api';
 
 const fetchChartData = async () => {
-  const token = localStorage.getItem('token');
-  const res = await fetch('http://localhost:8080/api/dashboard/chart-data', {
-    headers: { 'Authorization': `Bearer ${token}` }
-  });
-  if (!res.ok) throw new Error('Failed to fetch chart data');
-  const json = await res.json();
-  return json.data;
+  const res = await api.get('/dashboard/chart-data');
+  return res.data.data;
 };
 
 const Dashboard: React.FC = () => {

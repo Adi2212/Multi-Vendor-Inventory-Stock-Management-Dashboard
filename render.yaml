@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: invo-backend
+    env: docker
+    region: oregon
+    rootDir: backend
+    plan: free
+    healthCheckPath: /api/auth/refresh # just a dummy path to check if it's up
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: invo-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: invo-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: invo-db
+          property: password
+
+  - type: web
+    name: invo-frontend
+    env: static
+    region: oregon
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    pullRequestPreviewsEnabled: false
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: invo-backend
+          property: host
+          # We need to prepend https:// and append /api
+          # Render automatically exposes host as `example.onrender.com`
+          # However, VITE_API_URL needs the full protocol. We'll set it manually in the dashboard or here:
+      - key: VITE_API_URL
+        value: https://invo-backend.onrender.com/api # Replace with actual backend URL if different
+
+databases:
+  - name: invo-db
+    databaseName: inventory_db
+    user: root
+    plan: free
+    region: oregon
