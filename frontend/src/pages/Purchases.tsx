@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { getPurchases, createPurchase, getSuppliers, getProducts, updatePurchaseStatus } from '../services/inventory.service';
-import { Plus, Search, Truck, Loader2, DollarSign, Trash2, Edit2 } from 'lucide-react';
+import { Plus, Search, Truck, Loader2, Trash2 } from 'lucide-react';
 
 const Purchases: React.FC = () => {
   const queryClient = useQueryClient();
@@ -57,7 +57,7 @@ const Purchases: React.FC = () => {
   };
 
   const watchItems = watch('items');
-  const totalAmount = watchItems.reduce((acc, curr) => acc + (parseFloat(curr.unitCost || 0) * parseInt(curr.quantity || 0)), 0);
+  const totalAmount = watchItems.reduce((acc, curr) => acc + (Number(curr.unitCost || 0) * Number(curr.quantity || 0)), 0);
 
   const getStatusColor = (status: string) => {
     switch (status) {

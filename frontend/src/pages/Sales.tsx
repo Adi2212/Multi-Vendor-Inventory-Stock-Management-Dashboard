@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { getSales, createSale, getCustomers, getProducts } from '../services/inventory.service';
-import { Plus, Search, Contact, Loader2, Trash2, ShoppingCart, FileText } from 'lucide-react';
+import { Plus, Search, Loader2, Trash2, ShoppingCart, FileText } from 'lucide-react';
 import { downloadInvoice } from '../services/inventory.service';
 
 const Sales: React.FC = () => {
@@ -55,17 +55,9 @@ const Sales: React.FC = () => {
   };
 
   const watchItems = watch('items');
-  const totalAmount = watchItems.reduce((acc, curr) => acc + (parseFloat(curr.unitPrice || 0) * parseInt(curr.quantity || 0)), 0);
+  const totalAmount = watchItems.reduce((acc, curr) => acc + (Number(curr.unitPrice || 0) * Number(curr.quantity || 0)), 0);
 
-  // Auto-fill price when product is selected
-  const handleProductChange = (index: number, productId: string) => {
-    const product = products.find((p: any) => p.id === parseInt(productId));
-    if (product) {
-       // We can't easily auto-fill via register without setValue from RHF, 
-       // but for simplicity in this prototype, user can see the price and adjust.
-       // Ideally we use setValue(`items.${index}.unitPrice`, product.price)
-    }
-  };
+
 
   return (
     <div className="p-8">

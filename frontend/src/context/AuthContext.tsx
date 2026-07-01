@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+
 
 interface User {
   id: number;
@@ -42,7 +42,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (currentToken) {
         try {
           // Import api here to avoid circular dependencies if any, or just use fetch
-          const response = await fetch('http://localhost:8080/api/auth/refresh', {
+          const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8080/api'}/auth/refresh`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
