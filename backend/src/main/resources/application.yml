@@ -1,11 +1,14 @@
 spring:
   application:
     name: backend
+
+server:
+  port: ${PORT:8080}
   
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/inventory_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
-    username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:root123}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://${MYSQLHOST:localhost}:${MYSQLPORT:3306}/${MYSQLDATABASE:inventory_db}?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true}
+    username: ${SPRING_DATASOURCE_USERNAME:${MYSQLUSER:root}}
+    password: ${SPRING_DATASOURCE_PASSWORD:${MYSQLPASSWORD:root123}}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
